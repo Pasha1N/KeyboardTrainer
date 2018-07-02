@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfApp1;
 
 namespace KeyboardSimulator
 {
@@ -22,6 +21,7 @@ namespace KeyboardSimulator
     public partial class MainWindow : Window
     {
         private Border border = null;
+        private Brush previousColor=null;
         private ICollection<Grid> grids = new List<Grid>();
 
         public MainWindow()
@@ -32,21 +32,61 @@ namespace KeyboardSimulator
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            //MessageBox.Show(e.Key.ToString());
-
-            foreach (Grid grid in grids)
+            if (e.Key == Key.CapsLock)
             {
-                foreach (object item in grid.Children)
+                bool isLowercase = true;
+                bool checkRegister = true;
+
+                foreach (Grid grid in grids)
                 {
-                    border = item as Border;
-
-                    if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
+                    foreach (object item in grid.Children)
                     {
-                       PreviousColor.Color = border.Background;
+                        border = item as Border;
 
-                        border.Background = Brushes.Coral;
+                        TextBlock textBlock = border.Child as TextBlock;
+
+                        if (textBlock != null)
+                        {
+                            if (checkRegister)
+                            {
+                                foreach (char symbol in textBlock.Text)
+                                {
+                                    if (char.IsUpper(symbol))
+                                    {
+                                        checkRegister = false;
+                                        isLowercase = false;
+                                    }
+                                }
+                            }
+
+                            if (isLowercase)
+                            {
+                                textBlock.Text = textBlock.Text.ToUpper();
+                            }
+                            else
+                            {
+                                textBlock.Text = textBlock.Text.ToLower();
+                            }
+                        }
                     }
-                }      
+                }
+            }
+            else
+            {
+                foreach (Grid grid in grids)
+                {
+                    foreach (object item in grid.Children)
+                    {
+                        border = item as Border;
+
+                        if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
+                        {
+                            previousColor = border.Background;
+
+                            border.Background = Brushes.Coral;
+                        }
+                    }
+                }
             }
         }
 
@@ -60,8 +100,7 @@ namespace KeyboardSimulator
 
                     if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
                     {
-                        border.Background = PreviousColor.Color;
-                       // border.Background = Brushes.Blue;
+                        border.Background = previousColor;
 
                         TextBlock textBlock = border.Child as TextBlock;
 
