@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace KeyboardSimulator
 {
-    class LowerCase
+    static internal class LowerCase
     {
-        private bool lowerCase = true;
+        static private bool lowerCase = true;
 
+        static public bool Register
+        {
+            get => lowerCase;
+            set => lowerCase = value;
+        }
     }
 }

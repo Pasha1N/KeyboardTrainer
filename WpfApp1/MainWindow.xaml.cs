@@ -15,13 +15,11 @@ using System.Windows.Shapes;
 
 namespace KeyboardSimulator
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private Border border = null;
-        private Brush previousColor=null;
+        private bool capsLockIspressed = false;
+        private Brush previousColor = null;
         private ICollection<Grid> grids = new List<Grid>();
 
         public MainWindow()
@@ -34,32 +32,21 @@ namespace KeyboardSimulator
         {
             if (e.Key == Key.CapsLock)
             {
-                bool isLowercase = true;
-                bool checkRegister = true;
+                capsLockIspressed = true;
+            }
 
+            if (capsLockIspressed && e.Key == Key.LeftShift || e.Key == Key.RightShift)
+            {
                 foreach (Grid grid in grids)
                 {
                     foreach (object item in grid.Children)
                     {
                         border = item as Border;
-
                         TextBlock textBlock = border.Child as TextBlock;
 
                         if (textBlock != null)
                         {
-                            if (checkRegister)
-                            {
-                                foreach (char symbol in textBlock.Text)
-                                {
-                                    if (char.IsUpper(symbol))
-                                    {
-                                        checkRegister = false;
-                                        isLowercase = false;
-                                    }
-                                }
-                            }
-
-                            if (isLowercase)
+                            if (LowerCase.Register)
                             {
                                 textBlock.Text = textBlock.Text.ToUpper();
                             }
@@ -70,6 +57,7 @@ namespace KeyboardSimulator
                         }
                     }
                 }
+                LowerCase.Register = LowerCase.Register == true ? false : true;
             }
             else
             {
@@ -82,7 +70,6 @@ namespace KeyboardSimulator
                         if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
                         {
                             previousColor = border.Background;
-
                             border.Background = Brushes.Coral;
                         }
                     }
@@ -92,6 +79,11 @@ namespace KeyboardSimulator
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.CapsLock)
+            {
+                capsLockIspressed = false;
+            }
+
             foreach (Grid grid in grids)
             {
                 foreach (object item in grid.Children)
@@ -101,12 +93,28 @@ namespace KeyboardSimulator
                     if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
                     {
                         border.Background = previousColor;
-
                         TextBlock textBlock = border.Child as TextBlock;
+                        string text = string.Empty;
 
                         if (textBlock != null)
                         {
-                            resultString.Text = string.Concat(resultString.Text, textBlock.Text);
+                            text = textBlock.Text;
+
+                            if (textBlock.Text == "Space" || textBlock.Text == "SPACE")
+                            {
+                                text = " ";
+                            }
+
+                            if (text == sampleString2.Text[0].ToString())
+                            {
+                                resultString1.Text = string.Concat(resultString1.Text, text);
+                                sampleString1.Text = string.Concat(sampleString1.Text, sampleString2.Text[0]);
+                                sampleString2.Text = sampleString2.Text.Remove(0, 1);
+                            }
+                            else
+                            {
+                                fails.Text = (int.Parse(fails.Text) + 1).ToString();
+                            }
                         }
                     }
                 }
@@ -122,27 +130,64 @@ namespace KeyboardSimulator
             grids.Add(grid7);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            int from = 97;
+            int to = 122;
+            int countSymbols = 0;
+
+            if (sampleString2.Text.Length > 0)
+            {
+                sampleString2.Text = null;
+            }
+
+            if (registerOfSelfGeneratedString.IsChecked == true)
+            {
+                from = 65;
+                to = 90;
+            }
+            else if (registerOfSelfGeneratedString.IsChecked == false)
+            {
+                from = 97;
+                to = 122;
+            }
+
+            countSymbols = (int)difficulty.Value;
             Random random = new Random();
             int previousNumber = 0;
 
-            for (int i = 0; i < 115; i++)
+            for (int i = 0; i < countSymbols; i++)
             {
-                int number = random.Next(1,7);
+                int number = random.Next(1, 7);
 
-                if (previousNumber != 1&&number == 1)
+                if (previousNumber != 1 && number == 1)
                 {
-                        sampleString.Text = string.Concat(sampleString.Text, " ");
+                    sampleString2.Text = string.Concat(sampleString2.Text, " ");
                 }
                 else
                 {
-                    int randomNumber = random.Next(97, 122);
+                    int randomNumber = random.Next(from, to);
                     char symbol = (char)randomNumber;
-                    sampleString.Text = string.Concat(sampleString.Text, symbol.ToString());
+                    sampleString2.Text = string.Concat(sampleString2.Text, symbol.ToString());
                 }
                 previousNumber = number;
             }
+            start.IsEnabled = false;
+        }
+
+        private void difficulty_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            difficultyText.Text = ((int)difficulty.Value).ToString();
+        }
+
+        private void registerOfSelfGeneratedString_Checked(object sender, RoutedEventArgs e)
+        {
+            difficulty.Maximum = 92;
+        }
+
+        private void registerOfSelfGeneratedString_Unchecked(object sender, RoutedEventArgs e)
+        {
+            difficulty.Maximum = 115;
         }
     }
 }
