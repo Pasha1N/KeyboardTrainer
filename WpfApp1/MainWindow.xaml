@@ -24,35 +24,35 @@
 
         <WrapPanel>
             <TextBlock VerticalAlignment="Center" Margin="0,0,5,0">Speed:</TextBlock>
-            <TextBlock VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="ExtraBlack">0</TextBlock>
+            <TextBlock x:Name="characters" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="ExtraBlack">0</TextBlock>
             <TextBlock VerticalAlignment="Center">chars/min</TextBlock>
             <TextBlock VerticalAlignment="Center" Margin="70,0,0,0">Fails:</TextBlock>
             <TextBlock x:Name="fails" VerticalAlignment="Center" Margin="5,0,0,0" FontWeight="ExtraBlack">0</TextBlock>
             <TextBlock VerticalAlignment="Center" Margin="150,0,0,0"> Difficulty:</TextBlock>
             <TextBlock x:Name="difficultyText" VerticalAlignment="Center" Margin="7,0,0,0" FontWeight="ExtraBlack">0</TextBlock>
-            <Slider x:Name="difficulty" Maximum="115"  VerticalAlignment="Center" Width="100" Margin="15,0,0,0" ValueChanged="difficulty_ValueChanged"></Slider>
+            <Slider x:Name="difficulty" Maximum="115"  VerticalAlignment="Center" Width="100" Margin="15,0,0,0" ValueChanged="Difficulty_ValueChanged"></Slider>
             <CheckBox x:Name="registerOfSelfGeneratedString" VerticalAlignment="Center" Margin="10,0,0,0" Content="Case Sensitive"
-                      Checked="registerOfSelfGeneratedString_Checked"
-                      Unchecked="registerOfSelfGeneratedString_Unchecked"/>
+                      Checked="RegisterOfSelfGeneratedString_Checked"
+                      Unchecked="RegisterOfSelfGeneratedString_Unchecked"/>
 
         </WrapPanel>
         <Grid  Grid.Row="1" HorizontalAlignment="Right" Width="70">
-            <Button x:Name="stop"  Content="Stop"  Width="90" Margin="-20,3,0,3" FontSize="11"/>
+            <Button x:Name="stop" IsEnabled="False" Content="Stop"  Width="90" Margin="-20,3,0,3" FontSize="11" Click="Stop_Click"/>
             <Button x:Name="start"  Content="Start" Width="90" Margin="-110,3,90,3" Click="StartButton_Click"/>
         </Grid>
 
         <StackPanel  Grid.Row="2" >
             <WrapPanel Background="Aqua">
                 <Grid>
-                    <TextBlock FontFamily="Consoles"  x:Name="sampleString1" Background="LightGreen" Height="19"></TextBlock>
+                    <TextBlock x:Name="sampleString1" FontFamily="Consoles" Background="LightGreen" Height="19"></TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock  x:Name="sampleString2" FontFamily="Consoles" Background="Aqua" Height="19"></TextBlock>
+                    <TextBlock  x:Name="sampleString2" FontFamily="Consoles" Background="Aqua" Height="19"></TextBlock> 
                 </Grid>
             </WrapPanel>
             <WrapPanel Background="Aqua">
                 <Grid>
-                    <TextBlock  x:Name="resultString1" FontFamily="Consoles" Background="LightGreen" Height="19"></TextBlock>
+                    <TextBlock  x:Name="resultString1" FontFamily="Consoles" Background="LightGreen" Height="19"  />
                 </Grid>
             </WrapPanel>
 
