@@ -98,17 +98,13 @@ namespace KeyboardSimulator
             int speed = numberOfClickInSecond * 60;
             characters.Text = speed.ToString();
             numberOfClickInSecond = 0;
-            //characters.Text = numberOfCorrectClicks.ToString();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.CapsLock)
-            {
-                capsLockIspressed = true;
-            }
+            capsLockIspressed = e.Key == Key.CapsLock;
 
-            if (capsLockIspressed && e.Key == Key.LeftShift || capsLockIspressed && e.Key == Key.RightShift) 
+            if (capsLockIspressed && e.Key == Key.LeftShift || capsLockIspressed && e.Key == Key.RightShift)
             {
                 foreach (Grid grid in grids)
                 {
@@ -164,7 +160,7 @@ namespace KeyboardSimulator
             {
                 capsLockIspressed = false;
             }
-            
+
             foreach (Grid grid in grids)
             {
                 foreach (object item in grid.Children)
