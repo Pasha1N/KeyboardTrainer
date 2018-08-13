@@ -241,7 +241,6 @@ namespace KeyboardSimulator
 
             stop.IsEnabled = false;
             start.IsEnabled = true;
-            MessageBox.Show($"speed [{characters.Text}]\nFails [{fails.Text}]");
         }
     }
 }
