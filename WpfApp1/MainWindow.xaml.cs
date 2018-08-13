@@ -36,6 +36,7 @@ namespace KeyboardSimulator
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            //from и to это диапазон кодов в таблице ASCII
             int from = 97;
             int to = 122;
             int countSymbols = 0;
@@ -47,11 +48,13 @@ namespace KeyboardSimulator
 
             if (registerOfSelfGeneratedString.IsChecked == true)
             {
+                //from и to это диапазон кодов в таблице ASCII
                 from = 65;
                 to = 90;
             }
             else if (registerOfSelfGeneratedString.IsChecked == false)
             {
+                //from и to это диапазон кодов в таблице ASCII
                 from = 97;
                 to = 122;
             }
@@ -62,6 +65,7 @@ namespace KeyboardSimulator
 
             for (int i = 0; i < countSymbols; i++)
             {
+                // [1,7] этот диапазон говорит что в одном случае из семи будет генерироваться пробел в само генерируемой строке
                 int number = random.Next(1, 7);
 
                 if (previousNumber != 1 && number == 1)
@@ -85,17 +89,20 @@ namespace KeyboardSimulator
 
         private void RegisterOfSelfGeneratedString_Checked(object sender, RoutedEventArgs e)
         {
+            //92 это максимальное число символов в само генерируемой строке
             difficulty.Maximum = 92;
         }
 
         private void RegisterOfSelfGeneratedString_Unchecked(object sender, RoutedEventArgs e)
         {
+            //92 это максимальное число символов в само генерируемой строке
             difficulty.Maximum = 115;
         }
 
         public void Update_Timer(object sender, EventArgs e)
         {
-            int speed = numberOfClickInSecond * 60;
+            int seconds = 60;
+            int speed = numberOfClickInSecond * seconds;
             characters.Text = speed.ToString();
             numberOfClickInSecond = 0;
         }
