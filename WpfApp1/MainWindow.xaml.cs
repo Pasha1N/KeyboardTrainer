@@ -34,6 +34,18 @@ namespace KeyboardSimulator
             difficultyText.Text = ((int)difficulty.Value).ToString();
         }
 
+        private void RegisterOfSelfGeneratedString_Checked(object sender, RoutedEventArgs e)
+        {
+            //92 это максимальное число символов в само генерируемой строке
+            difficulty.Maximum = 92;
+        }
+
+        private void RegisterOfSelfGeneratedString_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //92 это максимальное число символов в само генерируемой строке
+            difficulty.Maximum = 115;
+        }
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             //from и to это диапазон кодов в таблице ASCII
@@ -87,16 +99,9 @@ namespace KeyboardSimulator
             update.Start();
         }
 
-        private void RegisterOfSelfGeneratedString_Checked(object sender, RoutedEventArgs e)
+        private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            //92 это максимальное число символов в само генерируемой строке
-            difficulty.Maximum = 92;
-        }
-
-        private void RegisterOfSelfGeneratedString_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //92 это максимальное число символов в само генерируемой строке
-            difficulty.Maximum = 115;
+            PressedStop();
         }
 
         public void Update_Timer(object sender, EventArgs e)
@@ -216,9 +221,13 @@ namespace KeyboardSimulator
             }
         }
 
-        private void Stop_Click(object sender, RoutedEventArgs e)
+        public void InitializingTheGrids()
         {
-            PressedStop();
+            grids.Add(grid3);
+            grids.Add(grid4);
+            grids.Add(grid5);
+            grids.Add(grid6);
+            grids.Add(grid7);
         }
 
         public void PressedStop()
@@ -233,15 +242,6 @@ namespace KeyboardSimulator
             stop.IsEnabled = false;
             start.IsEnabled = true;
             MessageBox.Show($"speed [{characters.Text}]\nFails [{fails.Text}]");
-        }
-
-        public void InitializingTheGrids()
-        {
-            grids.Add(grid3);
-            grids.Add(grid4);
-            grids.Add(grid5);
-            grids.Add(grid6);
-            grids.Add(grid7);
         }
     }
 }
