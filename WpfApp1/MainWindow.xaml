@@ -47,7 +47,7 @@
                     <TextBlock x:Name="sampleString1" FontFamily="Consoles" Background="LightGreen" Height="19"></TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock  x:Name="sampleString2" FontFamily="Consoles" Background="Aqua" Height="19"></TextBlock> 
+                    <TextBlock  x:Name="sampleString2" FontFamily="Consoles" Background="Aqua" Height="19"></TextBlock>
                 </Grid>
             </WrapPanel>
             <WrapPanel Background="Aqua">
