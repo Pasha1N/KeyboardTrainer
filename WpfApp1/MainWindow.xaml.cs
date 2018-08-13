@@ -11,13 +11,13 @@ namespace KeyboardSimulator
     public partial class MainWindow : Window
     {
         private ButtonIsPressed buttonIsPressed = new ButtonIsPressed();
-        private Border border = null;
-        private bool capsLockIspressed = false;
+        private Border border;
+        private bool capsLockIspressed;
         private ICollection<Grid> grids = new List<Grid>();
-        private int lengthSampleString = 0;
-        private int numberOfCorrectClicks = 0;
-        private int numberOfClickInSecond = 0;
-        private Brush previousColor = null;
+        private int lengthSampleString;
+        private int numberOfCorrectClicks;
+        private int numberOfClickInSecond;
+        private Brush previousColor;
         private DispatcherTimer update;
 
         public MainWindow()
