@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace KeyboardSimulator
+namespace KeyboardTrainer
 {
     public partial class App : Application
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KeyboardSimulator.Properties
+namespace KeyboardTrainer.Properties
 {
 
 

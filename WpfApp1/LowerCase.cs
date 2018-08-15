@@ -1,4 +1,4 @@
-﻿namespace KeyboardSimulator
+﻿namespace KeyboardTrainer
 {
     internal static class LowerCase
     {

@@ -5,8 +5,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KeyboardSimulator"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="KeyboardSimulator.MainWindow"
+        xmlns:local="clr-namespace:KeyboardTrainer"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="KeyboardTrainer.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="330" Width="690">
     <Grid>
