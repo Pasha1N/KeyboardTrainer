@@ -167,7 +167,7 @@ namespace KeyboardSimulator
                     }
                 }
 
-                LowerCase.Register = LowerCase.Register == true ? false : true;
+                LowerCase.Register = LowerCase.Register == false;
             }
             else
             {
