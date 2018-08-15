@@ -301,7 +301,7 @@ namespace KeyboardTrainer
             fails.Text = string.Empty;
             characters.Text = string.Empty;
             difficultyText.Text = string.Empty;
-            difficulty.Value = 0;
+            difficulty.Value = 1;
 
             stop.IsEnabled = false;
             start.IsEnabled = true;
