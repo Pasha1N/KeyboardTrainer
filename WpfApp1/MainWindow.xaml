@@ -570,7 +570,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Grid.ColumnSpan="2"   Margin="2,3,2,3" >
+            <Border Tag="Capital" Grid.Column="0" Grid.ColumnSpan="2"   Margin="2,3,2,3" >
                 <Border.BorderThickness>
                     <Thickness>2</Thickness>
                 </Border.BorderThickness>
@@ -801,7 +801,7 @@
                 <ColumnDefinition Width="110"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.ColumnSpan="2"   Margin="2,3,2,3" >
+            <Border Tag="LeftShift" Grid.ColumnSpan="2"   Margin="2,3,2,3" >
                 <Border.BorderThickness>
                     <Thickness>2</Thickness>
                 </Border.BorderThickness>
@@ -979,7 +979,7 @@
                 </Border.Background>
             </Border>
 
-            <Border Grid.Column="13" Grid.ColumnSpan="14"  Margin="2,3,2,3" >
+            <Border Tag="RightShift" Grid.Column="13" Grid.ColumnSpan="14"  Margin="2,3,2,3" >
                 <Border.BorderThickness>
                     <Thickness>2</Thickness>
                 </Border.BorderThickness>

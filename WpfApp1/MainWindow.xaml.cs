@@ -14,6 +14,7 @@ namespace KeyboardSimulator
         private Border border;
         private bool capsLockIspressed;
         private ICollection<Grid> grids = new List<Grid>();
+        private ICollection<Key> limitedKeys = new List<Key>();
         private int lengthSampleString;
         private int numberOfCorrectClicks;
         private int numberOfClickInSecond;
@@ -23,7 +24,7 @@ namespace KeyboardSimulator
         public MainWindow()
         {
             InitializeComponent();
-            InitializingTheGrids();
+            Initializing();
             update = new DispatcherTimer();
             update.Interval = TimeSpan.FromSeconds(1);
             update.Tick += new EventHandler(Update_Timer);
@@ -114,7 +115,10 @@ namespace KeyboardSimulator
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            capsLockIspressed = e.Key == Key.CapsLock;
+            if (e.Key == Key.CapsLock)
+            {
+                capsLockIspressed = true;
+            }
 
             if (capsLockIspressed && e.Key == Key.LeftShift || capsLockIspressed && e.Key == Key.RightShift)
             {
@@ -143,21 +147,26 @@ namespace KeyboardSimulator
             }
             else
             {
-                foreach (Grid grid in grids)
+                bool work = true;
+                work = AreRestrictionsFound(e.Key);
+                if (work)
                 {
-                    foreach (object item in grid.Children)
+                    foreach (Grid grid in grids)
                     {
-                        border = item as Border;
-
-                        if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
+                        foreach (object item in grid.Children)
                         {
-                            if (!buttonIsPressed.IsPressed)
-                            {
-                                buttonIsPressed.IsPressed = true;
-                                previousColor = border.Background;
-                            }
+                            border = item as Border;
 
-                            border.Background = Brushes.LawnGreen;
+                            if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
+                            {
+                                if (!buttonIsPressed.IsPressed)
+                                {
+                                    buttonIsPressed.IsPressed = true;
+                                    previousColor = border.Background;
+                                }
+
+                                border.Background = Brushes.LawnGreen;
+                            }
                         }
                     }
                 }
@@ -167,52 +176,58 @@ namespace KeyboardSimulator
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
             buttonIsPressed.IsPressed = false;
+            bool work = true;
 
             if (e.Key == Key.CapsLock)
             {
-                capsLockIspressed = false;
+               capsLockIspressed = false;
             }
 
-            foreach (Grid grid in grids)
+            work = AreRestrictionsFound(e.Key);
+
+            if (work)
             {
-                foreach (object item in grid.Children)
+                foreach (Grid grid in grids)
                 {
-                    border = item as Border;
-
-                    if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
+                    foreach (object item in grid.Children)
                     {
-                        border.Background = previousColor;
+                        border = item as Border;
 
-                        if (sampleString2.Text.Length > 0)
+                        if (border.Tag != null && border.Tag.ToString() == e.Key.ToString())
                         {
-                            TextBlock textBlock = border.Child as TextBlock;
-                            string text = string.Empty;
+                            border.Background = previousColor;
 
-                            if (textBlock != null)
+                            if (sampleString2.Text.Length > 0)
                             {
-                                text = textBlock.Text;
+                                TextBlock textBlock = border.Child as TextBlock;
+                                string text = string.Empty;
 
-                                if (textBlock.Text == "Space" || textBlock.Text == "SPACE")
+                                if (textBlock != null)
                                 {
-                                    text = " ";
-                                }
+                                    text = textBlock.Text;
 
-                                if (text == sampleString2.Text[0].ToString())
-                                {
-                                    resultString1.Text = string.Concat(resultString1.Text, text);
-                                    sampleString1.Text = string.Concat(sampleString1.Text, sampleString2.Text[0]);
-                                    sampleString2.Text = sampleString2.Text.Remove(0, 1);
-                                    ++numberOfCorrectClicks;
-                                    ++numberOfClickInSecond;
-
-                                    if (resultString1.Text.Length == lengthSampleString)
+                                    if (textBlock.Text == "Space" || textBlock.Text == "SPACE")
                                     {
-                                        PressedStop();
+                                        text = " ";
                                     }
-                                }
-                                else
-                                {
-                                    fails.Text = (int.Parse(fails.Text) + 1).ToString();
+
+                                    if (text == sampleString2.Text[0].ToString())
+                                    {
+                                        resultString1.Text = string.Concat(resultString1.Text, text);
+                                        sampleString1.Text = string.Concat(sampleString1.Text, sampleString2.Text[0]);
+                                        sampleString2.Text = sampleString2.Text.Remove(0, 1);
+                                        ++numberOfCorrectClicks;
+                                        ++numberOfClickInSecond;
+
+                                        if (resultString1.Text.Length == lengthSampleString)
+                                        {
+                                            PressedStop();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        fails.Text = (int.Parse(fails.Text) + 1).ToString();
+                                    }
                                 }
                             }
                         }
@@ -221,13 +236,32 @@ namespace KeyboardSimulator
             }
         }
 
-        public void InitializingTheGrids()
+        public bool AreRestrictionsFound(Key erequiredKey)
+        {
+            bool work = true;
+
+            foreach (Key key in limitedKeys)
+            {
+                if (erequiredKey == key)
+                {
+                    work = false;
+                    break;
+                }
+            }
+            return work;
+        }
+
+        public void Initializing()
         {
             grids.Add(grid3);
             grids.Add(grid4);
             grids.Add(grid5);
             grids.Add(grid6);
             grids.Add(grid7);
+
+            limitedKeys.Add(Key.Capital);
+            limitedKeys.Add(Key.LeftShift);
+            limitedKeys.Add(Key.RightShift);
         }
 
         public void PressedStop()
