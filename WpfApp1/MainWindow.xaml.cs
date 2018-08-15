@@ -19,7 +19,9 @@ namespace KeyboardSimulator
         private int numberOfCorrectClicks;
         private int numberOfClickInSecond;
         private Brush previousColor;
+        private ICollection<int> unnecessaryCharacterCodes = new List<int>();
         private DispatcherTimer update;
+
 
         public MainWindow()
         {
@@ -63,7 +65,7 @@ namespace KeyboardSimulator
             {
                 //from и to это диапазон кодов в таблице ASCII
                 from = 65;
-                to = 90;
+                to = 122;
             }
             else if (registerOfSelfGeneratedString.IsChecked == false)
             {
@@ -87,9 +89,31 @@ namespace KeyboardSimulator
                 }
                 else
                 {
+                    bool work = true;
                     int randomNumber = random.Next(from, to);
-                    char symbol = (char)randomNumber;
-                    sampleString2.Text = string.Concat(sampleString2.Text, symbol.ToString());
+
+                    if (registerOfSelfGeneratedString.IsChecked == false)
+                    {
+                        char symbol = (char)randomNumber;
+                        sampleString2.Text = string.Concat(sampleString2.Text, symbol.ToString());
+                    }
+                    else if (registerOfSelfGeneratedString.IsChecked == true)
+                    {
+                        foreach (int item in unnecessaryCharacterCodes)
+                        {
+                            if (randomNumber == item)
+                            {
+                                work = false;
+                                break;
+                            }
+                        }
+
+                        if (work)
+                        {
+                            char symbol = (char)randomNumber;
+                            sampleString2.Text = string.Concat(sampleString2.Text, symbol.ToString());
+                        }
+                    }
                 }
                 previousNumber = number;
             }
@@ -180,7 +204,7 @@ namespace KeyboardSimulator
 
             if (e.Key == Key.CapsLock)
             {
-               capsLockIspressed = false;
+                capsLockIspressed = false;
             }
 
             work = AreRestrictionsFound(e.Key);
@@ -262,6 +286,13 @@ namespace KeyboardSimulator
             limitedKeys.Add(Key.Capital);
             limitedKeys.Add(Key.LeftShift);
             limitedKeys.Add(Key.RightShift);
+
+            unnecessaryCharacterCodes.Add(91);
+            unnecessaryCharacterCodes.Add(92);
+            unnecessaryCharacterCodes.Add(93);
+            unnecessaryCharacterCodes.Add(94);
+            unnecessaryCharacterCodes.Add(95);
+            unnecessaryCharacterCodes.Add(96);
         }
 
         public void PressedStop()
@@ -272,6 +303,7 @@ namespace KeyboardSimulator
             fails.Text = string.Empty;
             characters.Text = string.Empty;
             difficultyText.Text = string.Empty;
+            difficulty.Value = 0;
 
             stop.IsEnabled = false;
             start.IsEnabled = true;
