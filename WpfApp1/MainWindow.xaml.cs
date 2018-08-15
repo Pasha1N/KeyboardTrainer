@@ -45,7 +45,7 @@ namespace KeyboardSimulator
 
         private void RegisterOfSelfGeneratedString_Unchecked(object sender, RoutedEventArgs e)
         {
-            //92 это максимальное число символов в само генерируемой строке
+            //115 это максимальное число символов в само генерируемой строке
             difficulty.Maximum = 115;
         }
 
@@ -63,13 +63,11 @@ namespace KeyboardSimulator
 
             if (registerOfSelfGeneratedString.IsChecked == true)
             {
-                //from и to это диапазон кодов в таблице ASCII
                 from = 65;
                 to = 122;
             }
             else if (registerOfSelfGeneratedString.IsChecked == false)
             {
-                //from и to это диапазон кодов в таблице ASCII
                 from = 97;
                 to = 122;
             }
