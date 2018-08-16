@@ -61,12 +61,12 @@ namespace KeyboardTrainer
                 sampleString2.Text = null;
             }
 
-            if (registerOfSelfGeneratedString.IsChecked == true)
+            if ((bool)registerOfSelfGeneratedString.IsChecked)
             {
                 from = 65;
                 to = 122;
             }
-            else if (registerOfSelfGeneratedString.IsChecked == false)
+            else if ((bool)registerOfSelfGeneratedString.IsChecked)
             {
                 from = 97;
                 to = 122;
@@ -165,12 +165,13 @@ namespace KeyboardTrainer
                     }
                 }
 
-                LowerCase.Register = LowerCase.Register == false;
+                LowerCase.Register = !LowerCase.Register;
             }
             else
             {
                 bool work = true;
                 work = AreRestrictionsFound(e.Key);
+
                 if (work)
                 {
                     foreach (Grid grid in grids)
