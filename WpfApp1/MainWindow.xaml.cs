@@ -33,9 +33,79 @@ namespace KeyboardTrainer
             update.Tick += new EventHandler(Update_Timer);
         }
 
+        public void AddCharacterToCharactersForGeneratedString(char symbol)
+        {
+            bool isSuchSymbol = false;
+
+            foreach (char item in charactersForGeneratedString)
+            {
+                if (symbol == item)
+                {
+                    isSuchSymbol = true;
+                }
+            }
+
+            if (!isSuchSymbol)
+            {
+                charactersForGeneratedString.Add(symbol);
+            }
+        }
+
+        public bool AreRestrictionsFound(Key erequiredKey)
+        {
+            bool work = true;
+
+            foreach (Key key in limitedKeys)
+            {
+                if (erequiredKey == key)
+                {
+                    work = false;
+                    break;
+                }
+            }
+            return work;
+        }
+
         private void Difficulty_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             difficultyText.Text = ((int)difficulty.Value).ToString();
+        }
+
+        public void Initializing()
+        {
+            difficulty.Maximum = numberOfLetters;
+            grids.Add(grid3);
+            grids.Add(grid4);
+            grids.Add(grid5);
+            grids.Add(grid6);
+            grids.Add(grid7);
+
+            limitedKeys.Add(Key.Capital);
+            limitedKeys.Add(Key.LeftShift);
+            limitedKeys.Add(Key.RightShift);
+
+            unnecessaryCharacterCodes.Add(91);
+            unnecessaryCharacterCodes.Add(92);
+            unnecessaryCharacterCodes.Add(93);
+            unnecessaryCharacterCodes.Add(94);
+            unnecessaryCharacterCodes.Add(95);
+            unnecessaryCharacterCodes.Add(96);
+        }
+
+        public void PressedStop()
+        {
+            sampleString1.Text = string.Empty;
+            sampleString2.Text = string.Empty;
+            resultString1.Text = string.Empty;
+            speedText.Text = "0";
+            fails.Text = "0";
+            difficulty.Value = 1;
+            difficultyText.Text = difficulty.Value.ToString();
+
+            charactersForGeneratedString.Clear();
+
+            stop.IsEnabled = false;
+            start.IsEnabled = true;
         }
 
         private void RegisterOfSelfGeneratedString_Checked(object sender, RoutedEventArgs e)
@@ -245,76 +315,6 @@ namespace KeyboardTrainer
                         }
                     }
                 }
-            }
-        }
-
-        public bool AreRestrictionsFound(Key erequiredKey)
-        {
-            bool work = true;
-
-            foreach (Key key in limitedKeys)
-            {
-                if (erequiredKey == key)
-                {
-                    work = false;
-                    break;
-                }
-            }
-            return work;
-        }
-
-        public void Initializing()
-        {
-            difficulty.Maximum = numberOfLetters;
-            grids.Add(grid3);
-            grids.Add(grid4);
-            grids.Add(grid5);
-            grids.Add(grid6);
-            grids.Add(grid7);
-
-            limitedKeys.Add(Key.Capital);
-            limitedKeys.Add(Key.LeftShift);
-            limitedKeys.Add(Key.RightShift);
-
-            unnecessaryCharacterCodes.Add(91);
-            unnecessaryCharacterCodes.Add(92);
-            unnecessaryCharacterCodes.Add(93);
-            unnecessaryCharacterCodes.Add(94);
-            unnecessaryCharacterCodes.Add(95);
-            unnecessaryCharacterCodes.Add(96);
-        }
-
-        public void PressedStop()
-        {
-            sampleString1.Text = string.Empty;
-            sampleString2.Text = string.Empty;
-            resultString1.Text = string.Empty;
-            speedText.Text = "0";
-            fails.Text = "0";
-            difficulty.Value = 1;
-            difficultyText.Text = difficulty.Value.ToString();
-
-            charactersForGeneratedString.Clear();
-
-            stop.IsEnabled = false;
-            start.IsEnabled = true;
-        }
-
-        public void AddCharacterToCharactersForGeneratedString(char symbol)
-        {
-            bool isSuchSymbol = false;
-
-            foreach (char item in charactersForGeneratedString)
-            {
-                if (symbol == item)
-                {
-                    isSuchSymbol = true;
-                }
-            }
-
-            if (!isSuchSymbol)
-            {
-                charactersForGeneratedString.Add(symbol);
             }
         }
     }
