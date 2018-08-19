@@ -12,15 +12,17 @@ namespace KeyboardTrainer
     {
         private ButtonIsPressed buttonIsPressed = new ButtonIsPressed();
         private Border border;
+        private IList<char> charactersForGeneratedString = new List<char>();
         private ICollection<Grid> grids = new List<Grid>();
         private ICollection<Key> limitedKeys = new List<Key>();
         private int lengthSampleString;
+        private int LengthGeneratedString = 100;
         private int numberOfCorrectClicks;
         private int numberOfClickInSecond;
+        private int numberOfLetters = 26;
         private Brush previousColor;
         private ICollection<int> unnecessaryCharacterCodes = new List<int>();
         private DispatcherTimer update;
-
 
         public MainWindow()
         {
@@ -38,14 +40,12 @@ namespace KeyboardTrainer
 
         private void RegisterOfSelfGeneratedString_Checked(object sender, RoutedEventArgs e)
         {
-            //92 это максимальное число символов в само генерируемой строке
-            difficulty.Maximum = 92;
+            difficulty.Maximum = numberOfLetters * 2;
         }
 
         private void RegisterOfSelfGeneratedString_Unchecked(object sender, RoutedEventArgs e)
         {
-            //115 это максимальное число символов в само генерируемой строке
-            difficulty.Maximum = 115;
+            difficulty.Maximum = numberOfLetters / 2;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -75,9 +75,31 @@ namespace KeyboardTrainer
 
             countSymbols = (int)difficulty.Value;
             Random random = new Random();
-            int previousNumber = 0;
 
             for (int i = 0; i < countSymbols; i++)
+            {
+                bool work = true;
+                int randomNumber = random.Next(from, to);
+                char symbol = (char)randomNumber;
+
+                foreach (int item in unnecessaryCharacterCodes)
+                {
+                    if (randomNumber == item)
+                    {
+                        work = false;
+                        break;
+                    }
+                }
+
+                if (work)
+                {
+                    AddCharacterToCharactersForGeneratedString(symbol);
+                }
+            }
+
+            int previousNumber = 0;
+
+            for (int i = 0; i < LengthGeneratedString; i++)
             {
                 // [1,7] этот диапазон говорит что в одном случае из семи будет генерироваться пробел в само генерируемой строке
                 int number = random.Next(1, 7);
@@ -88,31 +110,8 @@ namespace KeyboardTrainer
                 }
                 else
                 {
-                    bool work = true;
-                    int randomNumber = random.Next(from, to);
-
-                    if (registerOfSelfGeneratedString.IsChecked == false)
-                    {
-                        char symbol = (char)randomNumber;
-                        sampleString2.Text = string.Concat(sampleString2.Text, symbol.ToString());
-                    }
-                    else if (registerOfSelfGeneratedString.IsChecked == true)
-                    {
-                        foreach (int item in unnecessaryCharacterCodes)
-                        {
-                            if (randomNumber == item)
-                            {
-                                work = false;
-                                break;
-                            }
-                        }
-
-                        if (work)
-                        {
-                            char symbol = (char)randomNumber;
-                            sampleString2.Text = string.Concat(sampleString2.Text, symbol.ToString());
-                        }
-                    }
+                    int randomNumber = random.Next(0, charactersForGeneratedString.Count);
+                    sampleString2.Text = string.Concat(sampleString2.Text, charactersForGeneratedString[randomNumber]);
                 }
                 previousNumber = number;
             }
@@ -132,7 +131,7 @@ namespace KeyboardTrainer
         {
             int seconds = 60;
             int speed = numberOfClickInSecond * seconds;
-            characters.Text = speed.ToString();
+            speedText.Text = speed.ToString();
             numberOfClickInSecond = 0;
         }
 
@@ -196,7 +195,6 @@ namespace KeyboardTrainer
         {
             buttonIsPressed.IsPressed = false;
             bool work = true;
-
             work = AreRestrictionsFound(e.Key);
 
             if (work)
@@ -267,6 +265,7 @@ namespace KeyboardTrainer
 
         public void Initializing()
         {
+            difficulty.Maximum = numberOfLetters;
             grids.Add(grid3);
             grids.Add(grid4);
             grids.Add(grid5);
@@ -290,13 +289,33 @@ namespace KeyboardTrainer
             sampleString1.Text = string.Empty;
             sampleString2.Text = string.Empty;
             resultString1.Text = string.Empty;
-            fails.Text = string.Empty;
-            characters.Text = string.Empty;
-            difficultyText.Text = string.Empty;
+            speedText.Text = "0";
+            fails.Text = "0";
             difficulty.Value = 1;
+            difficultyText.Text = difficulty.Value.ToString();
+
+            charactersForGeneratedString.Clear();
 
             stop.IsEnabled = false;
             start.IsEnabled = true;
+        }
+
+        public void AddCharacterToCharactersForGeneratedString(char symbol)
+        {
+            bool isSuchSymbol = false;
+
+            foreach (char item in charactersForGeneratedString)
+            {
+                if (symbol == item)
+                {
+                    isSuchSymbol = true;
+                }
+            }
+
+            if (!isSuchSymbol)
+            {
+                charactersForGeneratedString.Add(symbol);
+            }
         }
     }
 }
