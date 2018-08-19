@@ -52,8 +52,10 @@ namespace KeyboardTrainer
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             //from и to это диапазон кодов в таблице ASCII
-            int from = 97;
-            int to = 122;
+            int startOfRange = 97;
+            int endOfRange = 122;
+            int from = startOfRange;
+            int to = endOfRange;
             int countSymbols = 0;
 
             if (sampleString2.Text.Length > 0)
@@ -68,8 +70,8 @@ namespace KeyboardTrainer
             }
             else if ((bool)registerOfSelfGeneratedString.IsChecked)
             {
-                from = 97;
-                to = 122;
+                from = startOfRange;
+                to = endOfRange;
             }
 
             countSymbols = (int)difficulty.Value;
