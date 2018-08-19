@@ -12,7 +12,6 @@ namespace KeyboardTrainer
     {
         private ButtonIsPressed buttonIsPressed = new ButtonIsPressed();
         private Border border;
-        private bool capsLockIspressed;
         private ICollection<Grid> grids = new List<Grid>();
         private ICollection<Key> limitedKeys = new List<Key>();
         private int lengthSampleString;
@@ -139,12 +138,7 @@ namespace KeyboardTrainer
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.CapsLock)
-            {
-                capsLockIspressed = true;
-            }
-
-            if (capsLockIspressed && e.Key == Key.LeftShift || capsLockIspressed && e.Key == Key.RightShift)
+            if (e.Key == Key.CapsLock || e.Key == Key.LeftShift || e.Key == Key.RightShift)
             {
                 foreach (Grid grid in grids)
                 {
@@ -202,11 +196,6 @@ namespace KeyboardTrainer
         {
             buttonIsPressed.IsPressed = false;
             bool work = true;
-
-            if (e.Key == Key.CapsLock)
-            {
-                capsLockIspressed = false;
-            }
 
             work = AreRestrictionsFound(e.Key);
 
